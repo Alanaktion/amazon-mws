@@ -1,10 +1,11 @@
 <?php
+
 namespace MCS;
 
 use Exception;
 
-class MWSEndPoint{
-
+class MWSEndPoint
+{
     public static $endpoints = [
         'ListRecommendations' => [
             'method' => 'POST',

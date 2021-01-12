@@ -1,10 +1,9 @@
 <?php
+
 namespace MCS;
 
-use Exception;
-
-class MWSProduct{
-
+class MWSProduct
+{
     public $sku;
     public $price;
     public $quantity = 0;
@@ -58,7 +57,7 @@ class MWSProduct{
         if (count($exploded_price) == 2) {
             if (mb_strlen($exploded_price[0]) > 18) {
                 $this->validation_errors['price'] = 'Too high';
-            } else if (mb_strlen($exploded_price[1]) > 2) {
+            } elseif (mb_strlen($exploded_price[1]) > 2) {
                 $this->validation_errors['price'] = 'Too many decimals';
             }
         } else {
@@ -87,18 +86,18 @@ class MWSProduct{
                 }
                 break;
             default:
-               $this->validation_errors['product_id_type'] = 'Not one of: ASIN,UPC,EAN';
+                $this->validation_errors['product_id_type'] = 'Not one of: ASIN,UPC,EAN';
         }
 
         if (!in_array($this->condition_type, $this->conditions)) {
-            $this->validation_errors['condition_type'] = 'Not one of: ' . implode($this->conditions, ',');
+            $this->validation_errors['condition_type'] = 'Not one of: ' . implode(',', $this->conditions);
         }
 
         if ($this->condition_type != 'New') {
             $length = mb_strlen($this->condition_note);
             if ($length < 1) {
                 $this->validation_errors['condition_note'] = 'Required if condition_type not is New';
-            } else if ($length > 1000) {
+            } elseif ($length > 1000) {
                 $this->validation_errors['condition_note'] = 'Should not exceed 1000 characters';
             }
         }
@@ -110,7 +109,8 @@ class MWSProduct{
         }
     }
 
-    public function __set($property, $value) {
+    public function __set($property, $value)
+    {
         if (property_exists($this, $property)) {
             return $this->$property;
         }
