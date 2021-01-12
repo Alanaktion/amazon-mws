@@ -1,15 +1,19 @@
 # Amazon Marketplace Webservices
-[![Latest Stable Version](https://poser.pugx.org/mcs/amazon-mws/v/stable)](https://packagist.org/packages/mcs/amazon-mws) [![Latest Unstable Version](https://poser.pugx.org/mcs/amazon-mws/v/unstable)](https://packagist.org/packages/mcs/amazon-mws) [![License](https://poser.pugx.org/mcs/amazon-mws/license)](https://packagist.org/packages/mcs/amazon-mws) [![Total Downloads](https://poser.pugx.org/mcs/amazon-mws/downloads)](https://packagist.org/packages/mcs/amazon-mws)
 
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=FQG5EWN987PJW)
+[![Latest Stable Version](https://poser.pugx.org/alanaktion/amazon-mws/v/stable)](https://packagist.org/packages/alanaktion/amazon-mws)
 
-Interaction with the Amazon Api for vendors called MWS
+Interaction with the Amazon API for vendors called MWS
 
-### Installation:
+## Installation
+
 ```bash
-$ composer require mcs/amazon-mws
+composer require alanaktion/amazon-mws
 ```
+
+## Usage
+
 ### Initiate the client
+
 ```php
 require_once 'vendor/autoload.php';
 
@@ -28,7 +32,9 @@ if ($client->validateCredentials()) {
     // Credentials are not valid
 }
 ```
+
 ### Get orders
+
 ```php
 $fromDate = new DateTime('2016-01-01');
 $orders = $client->ListOrders($fromDate);
@@ -38,7 +44,9 @@ foreach ($orders as $order) {
     print_r($items);
 }
 ```
+
 ### Get product attributes
+
 ```php
 $searchField = 'ASIN'; // Can be GCID, SellerSKU, UPC, EAN, ISBN, or JAN
 
@@ -48,7 +56,9 @@ $result = $client->GetMatchingProductForId([
 
 print_r($result);
 ```
+
 ### Create or update a product
+
 ```php
 $product = new MCS\MWSProduct();
 $product->sku = 'TESTNOTFORSALE';
@@ -60,13 +70,14 @@ $product->quantity = 10;
 
 if ($product->validate()) {
     // You can also submit an array of MWSProduct objects
-    $result = $client->postProduct($product);    
+    $result = $client->postProduct($product);
 } else {
-    $errors = $product->getValidationErrors();        
-}  
+    $errors = $product->getValidationErrors();
+}
 ```
 
 ### Update product stock
+
 ```php
 $result = $client->updateStock([
     'sku1' => 20,
@@ -79,6 +90,7 @@ print_r($info);
 ```
 
 ### Update product stock with fulfillment latency specified
+
 ```php
 $result = $client->updateStockWithFulfillmentLatency([
     ['sku' => 'sku1', 'quantity' => 20, 'latency' => 1],
@@ -91,6 +103,7 @@ print_r($info);
 ```
 
 ### Update product pricing
+
 ```php
 $result = $client->updatePrice([
     'sku1' => '20.99',
@@ -101,6 +114,7 @@ print_r($result);
 $info = $client->GetFeedSubmissionResult($result['FeedSubmissionId']);
 print_r($info);
 ```
+
 ### Reports
 For all report types, visit:  [http://docs.developer.amazonservices.com](http://docs.developer.amazonservices.com/en_US/reports/Reports_ReportType.html#ReportTypeCategories__ListingsReports)
 
@@ -110,7 +124,9 @@ $reportId = $client->RequestReport('_GET_MERCHANT_LISTINGS_DATA_');
 $report_content = $client->GetReport($reportId);
 print_r($report_content);
 ```
+
 ### Available methods
+
 View source for detailed argument description.
 All methods starting with an uppercase character are also documented in the [Amazon MWS documentation](http://docs.developer.amazonservices.com/en_US/dev_guide/index.html)
 
