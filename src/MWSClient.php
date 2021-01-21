@@ -486,7 +486,7 @@ class MWSClient
     /**
      * Returns multiple orders based on the AmazonOrderId values that you specify.
      * @param string[] $AmazonOrderIds
-     * @return array|false
+     * @return array
      */
     public function GetOrders(array $AmazonOrderIds)
     {
@@ -500,7 +500,14 @@ class MWSClient
             $key++;
         }
         $response = $this->request('GetOrder', $data);
-        return $response['GetOrderResult']['Orders'] ?? false;
+
+        $response = $response['GetOrderResult']['Orders']['Order'];
+
+        if (array_keys($response) !== range(0, count($response) - 1)) {
+            return [$response];
+        }
+
+        return $response;
     }
 
     /**
