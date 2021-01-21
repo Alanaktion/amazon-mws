@@ -464,6 +464,7 @@ class MWSClient
             return [];
         }
     }
+
     /**
      * Returns an order based on the AmazonOrderId values that you specify.
      * @param string $AmazonOrderId
@@ -480,6 +481,26 @@ class MWSClient
         } else {
             return false;
         }
+    }
+
+    /**
+     * Returns multiple orders based on the AmazonOrderId values that you specify.
+     * @param string[] $AmazonOrderIds
+     * @return array|false
+     */
+    public function GetOrders(array $AmazonOrderIds)
+    {
+        if (count($AmazonOrderIds) > 50) {
+            throw new Exception('A maximum of 50 order IDs can be requested');
+        }
+        $data = [];
+        $key = 1;
+        foreach ($AmazonOrderIds as $id) {
+            $data["AmazonOrderId.Id.{$key}"] = $id;
+            $key++;
+        }
+        $response = $this->request('GetOrder', $data);
+        return $response['GetOrderResult']['Orders'] ?? false;
     }
 
     /**
